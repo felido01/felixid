@@ -122,7 +122,82 @@
       left: 100%;
     }
 
+    /* Preloader Styling */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+
+    #preloader.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .loader-text {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--primary-indigo), var(--primary-purple), var(--primary-pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: fadeInOut 2s infinite;
+    }
+
+    .loader-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--text-gray);
+      border-top: 4px solid var(--primary-indigo);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    /* Project Card Styling */
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .project-card .h-48 {
+      flex-shrink: 0;
+    }
+
+    .project-card .p-6 {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
     /* Animation Keyframes */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
     @keyframes fadeInUp {
       0% { transform: translateY(20px); opacity: 0; }
       100% { transform: translateY(0); opacity: 1; }
@@ -144,7 +219,7 @@
       body { font-size: calc(var(--font-sm) * 0.95); }
       #projects .grid {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.25rem;
+        gap: 1.5rem;
       }
     }
 
@@ -155,7 +230,7 @@
       body { font-size: calc(var(--font-sm) * 0.9); }
       #projects .grid {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
+        gap: 1.25rem;
       }
     }
 
@@ -166,12 +241,19 @@
       body { font-size: calc(var(--font-sm) * 0.85); }
       #projects .grid {
         grid-template-columns: 1fr;
-        gap: 0.75rem;
+        gap: 1rem;
+      }
+      .loader-text {
+        font-size: 1.25rem;
+      }
+      .loader-spinner {
+        width: 32px;
+        height: 32px;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .animate-fade-in-up, .animate-scale-fade {
+      .animate-fade-in-up, .animate-scale-fade, .loader-text, .loader-spinner {
         animation: none;
         transform: none;
         opacity: 1;
@@ -187,21 +269,24 @@
   </style>
 </head>
 <body class="overflow-x-hidden bg-gray-950 text-gray-100">
+  <!-- Preloader -->
+  <div id="preloader">
+    <div class="loader">
+      <div class="loader-text">Projects</div>
+      <div class="loader-spinner"></div>
+    </div>
+  </div>
+
   <!-- Header -->
   <header class="fixed top-0 w-full bg-gray-900/95 backdrop-blur-md z-50 border-b border-gray-800">
     <div class="max-w-7xl mx-auto flex justify-between items-center p-2 sm:p-4">
       <div class="flex items-center gap-2">
-        <a href="index.html" class="text-xl sm:text-2xl font-bold tracking-tight">
+        <a href="intro.html" class="text-xl sm:text-2xl font-bold tracking-tight">
           <span class="gradient-text">FELIX IDOWU</span>
         </a>
       </div>
       <nav class="hidden md:flex space-x-4" aria-label="Main navigation">
-        <a href="index.html#about" class="nav-link text-gray-300 hover:text-white">About</a>
-        <a href="index.html#skills" class="nav-link text-gray-300 hover:text-white">Skills</a>
         <a href="index.html#projects" class="nav-link text-gray-300 hover:text-white active">Projects</a>
-        <a href="index.html#experience" class="nav-link text-gray-300 hover:text-white">Experience</a>
-        <a href="index.html#certifications" class="nav-link text-gray-300 hover:text-white">Certifications</a>
-        <a href="index.html#contact" class="nav-link text-gray-300 hover:text-white">Contact</a>
       </nav>
       <button id="hamburger" class="md:hidden flex flex-col justify-between w-6 h-5 focus:outline-none" aria-label="Toggle mobile menu">
         <span class="block h-0.5 bg-white transition-all duration-300 transform" id="line1"></span>
@@ -211,27 +296,22 @@
     </div>
     <div id="mobileMenu" class="hidden md:hidden bg-gray-900/95 backdrop-blur-lg border-t border-gray-800">
       <div class="flex flex-col py-4 px-6 space-y-3" aria-label="Mobile navigation">
-        <a href="index.html#about" class="nav-link text-gray-300 hover:text-white py-2 text-lg">About</a>
-        <a href="index.html#skills" class="nav-link text-gray-300 hover:text-white py-2 text-lg">Skills</a>
         <a href="index.html#projects" class="nav-link text-gray-300 hover:text-white py-2 text-lg">Projects</a>
-        <a href="index.html#experience" class="nav-link text-gray-300 hover:text-white py-2 text-lg">Experience</a>
-        <a href="index.html#certifications" class="nav-link text-gray-300 hover:text-white py-2 text-lg">Certifications</a>
-        <a href="index.html#contact" class="nav-link text-gray-300 hover:text-white py-2 text-lg">Contact</a>
       </div>
     </div>
   </header>
 
   <!-- Projects Section -->
   <section id="projects" class="py-20 px-4 sm:px-6 max-w-6xl mx-auto">
-    <div class="text-center mb-16">
+    <div class="text-center mb-12">
       <h2 class="text-3xl sm:text-4xl font-bold mb-4 gradient-text animate-fade-in-up">All Projects</h2>
       <p class="text-lg text-gray-400 max-w-2xl mx-auto animate-fade-in-up animation-delay-200">
         A collection of my work in data analysis, visualization, and machine learning.
       </p>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="projectGrid">
       <!-- Project 1: Sales Dashboard -->
-      <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700/50 card-hover animate-scale-fade animation-delay-100" data-project="sales-dashboard">
+      <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700/50 card-hover animate-scale-fade animation-delay-100 project-card" data-project="sales-dashboard">
         <div class="h-48 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 flex items-center justify-center">
           <i class="fas fa-chart-pie text-6xl text-indigo-400"></i>
         </div>
@@ -254,7 +334,7 @@
         </div>
       </div>
       <!-- Project 2: Customer Segmentation -->
-      <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700/50 card-hover animate-scale-fade animation-delay-200" data-project="customer-segmentation">
+      <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700/50 card-hover animate-scale-fade animation-delay-200 project-card" data-project="customer-segmentation">
         <div class="h-48 bg-gradient-to-r from-purple-500/20 to-pink-500/20 flex items-center justify-center">
           <i class="fas fa-robot text-6xl text-purple-400"></i>
         </div>
@@ -277,7 +357,7 @@
         </div>
       </div>
       <!-- Project 3: Sentiment Analysis -->
-      <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700/50 card-hover animate-scale-fade animation-delay-300" data-project="sentiment-analysis">
+      <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700/50 card-hover animate-scale-fade animation-delay-300 project-card" data-project="sentiment-analysis">
         <div class="h-48 bg-gradient-to-r from-pink-500/20 to-red-500/20 flex items-center justify-center">
           <i class="fas fa-comments text-6xl text-pink-400"></i>
         </div>
@@ -300,7 +380,7 @@
         </div>
       </div>
       <!-- Project 4: Predictive Maintenance -->
-      <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700/50 card-hover animate-scale-fade animation-delay-400" data-project="predictive-maintenance">
+      <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700/50 card-hover animate-scale-fade animation-delay-400 project-card" data-project="predictive-maintenance">
         <div class="h-48 bg-gradient-to-r from-blue-500/20 to-green-500/20 flex items-center justify-center">
           <i class="fas fa-tools text-6xl text-blue-400"></i>
         </div>
@@ -323,7 +403,7 @@
         </div>
       </div>
       <!-- Project 5: Web Scraping Pipeline -->
-      <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700/50 card-hover animate-scale-fade animation-delay-500" data-project="web-scraping-pipeline">
+      <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700/50 card-hover animate-scale-fade animation-delay-500 project-card" data-project="web-scraping-pipeline">
         <div class="h-48 bg-gradient-to-r from-red-500/20 to-orange-500/20 flex items-center justify-center">
           <i class="fas fa-spider text-6xl text-red-400"></i>
         </div>
@@ -346,7 +426,7 @@
         </div>
       </div>
       <!-- Project 6: Fraud Detection -->
-      <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700/50 card-hover animate-scale-fade animation-delay-600" data-project="fraud-detection">
+      <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700/50 card-hover animate-scale-fade animation-delay-600 project-card" data-project="fraud-detection">
         <div class="h-48 bg-gradient-to-r from-teal-500/20 to-cyan-500/20 flex items-center justify-center">
           <i class="fas fa-shield-alt text-6xl text-teal-400"></i>
         </div>
@@ -369,7 +449,7 @@
         </div>
       </div>
       <!-- Project 7: Stock Price Prediction -->
-      <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700/50 card-hover animate-scale-fade animation-delay-700" data-project="stock-price-prediction">
+      <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700/50 card-hover animate-scale-fade animation-delay-700 project-card" data-project="stock-price-prediction">
         <div class="h-48 bg-gradient-to-r from-green-500/20 to-yellow-500/20 flex items-center justify-center">
           <i class="fas fa-chart-line text-6xl text-green-400"></i>
         </div>
@@ -456,6 +536,13 @@
     const $ = (selector) => document.querySelector(selector);
     const $$ = (selector) => document.querySelectorAll(selector);
 
+    // Preloader
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        $('#preloader').classList.add('hidden');
+      }, 500);
+    });
+
     // Mobile Menu
     const toggleMenu = () => {
       $('#mobileMenu').classList.toggle('hidden');
@@ -488,9 +575,9 @@
           toggleActions: 'play none none none'
         },
         opacity: 0,
-        y: 30,
-        scale: 0.9,
-        duration: 0.8,
+        y: 20,
+        scale: 0.95,
+        duration: 0.6,
         ease: 'power2.out'
       });
     });
