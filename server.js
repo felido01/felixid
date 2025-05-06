@@ -1,6 +1,7 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
+const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
@@ -19,13 +20,34 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Email sending route
+// Email sending route with reCAPTCHA verification
 app.post('/api/send-email', async (req, res) => {
-  const { name, email, message } = req.body;
+  const { name, email, message, recaptchaToken } = req.body;
 
   // Validate input
-  if (!name || !email || !message) {
-    return res.status(400).json({ message: 'All fields are required.' });
+  if (!name || !email || !message || !recaptchaToken) {
+    return res.status(400).json({ message: 'All fields and reCAPTCHA are required.' });
+  }
+
+  // Verify reCAPTCHA
+  try {
+    const recaptchaResponse = await axios.post(
+      'https://www.google.com/recaptcha/api/siteverify',
+      null,
+      {
+        params: {
+          secret: process.env.RECAPTCHA_SECRET_KEY,
+          response: recaptchaToken
+        }
+      }
+    );
+
+    if (!recaptchaResponse.data.success || recaptchaResponse.data.score < 0.5) {
+      return res.status(400).json({ message: 'reCAPTCHA verification failed. Please try again.' });
+    }
+  } catch (error) {
+    console.error('reCAPTCHA verification error:', error);
+    return res.status(500).json({ message: 'Error verifying reCAPTCHA.' });
   }
 
   // Email options
